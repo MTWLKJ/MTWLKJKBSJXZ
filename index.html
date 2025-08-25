@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冇圡游戏科技 - 电子工作证</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        /* 欢迎动画样式 */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            color: white;
+        }
+        
+        .welcome-text {
+            font-size: 10px;
+            opacity: 0;
+            text-align: center;
+            animation: growAndFade 5s ease-in-out forwards;
+        }
+        
+        @keyframes growAndFade {
+            0% {
+                font-size: 10px;
+                opacity: 0;
+            }
+            30% {
+                font-size: 36px;
+                opacity: 1;
+            }
+            70% {
+                font-size: 36px;
+                opacity: 1;
+            }
+            100% {
+                font-size: 50px;
+                opacity: 0;
+            }
+        }
+        
+        /* 工作证样式 */
+        .id-card {
+            width: 350px;
+            background: linear-gradient(145deg, #ffffff, #f3f3f3);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            padding: 25px;
+            position: relative;
+        }
+        
+        .company-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 5px;
+        }
+        
+          .employee-photo {
+            width: 120px;
+            height: 160px; /* 竖版长方形尺寸 */
+            object-fit: cover;
+            border: 4px solid #1a237e;
+            margin: 0 auto 20px;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-section {
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            width: 110px;
+            color: #555;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #222;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #1a237e, transparent);
+            margin: 15px 0;
+        }
+        
+        .footer {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 10px;
+        }
+        
+        .slogan {
+            flex: 1;
+            font-style: italic;
+            color: #1a237e;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        /* 二维码部分 */
+        .qr-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .qr-code {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 15px;
+            border: 10px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .qr-note {
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 10px;
+            max-width: 300px;
+            font-size: 14px;
+        }
+        
+        .flip-instruction {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 欢迎界面 -->
+    <div id="welcome-overlay">
+        <h1 class="welcome-text">欢迎你，新伙伴！你的旅程从此刻开始。
+        欢迎加入冇圡游戏科技大家庭</h1>
+    </div>
+    
+    <!-- 工作证正面 -->
+    <div class="id-card" id="main-card">
+        <div class="company-header">
+            <div class="company-name">冇圡游戏科技</div>
+            <div class="divider"></div>
+        </div>
+        
+        <img src="https://i.postimg.cc/XJpjwqs3/20250825-071425592.jpg" alt="员工照片" class="employee-photo">
+        
+        <div class="info-section">
+            <div class="info-item">
+                <span class="info-label">姓名:</span>
+                <span class="info-value">蔡杨鑫</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">入职时间:</span>
+                <span class="info-value">2025年8月25日0:00</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">身份识别码:</span>
+                <span class="info-value">530523**********33</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">工作证号:</span>
+                <span class="info-value">MTYXKJ0026</span>
+            </div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="footer">
+            <img src="https://i.postimg.cc/dQRsrbBh/image-edit-1735244925448-png.jpg" alt="公司Logo" class="company-logo">
+            <div class="slogan">
+                冇圡游戏科技<br>
+                引领游戏科技未来，打造卓越玩家体验
+            </div>
+        </div>
+    </div>
+    
+    <!-- 二维码部分 -->
+    <div class="qr-section" id="qr-section">
+        <img src="https://i.postimg.cc/Qt2xbZKP/1756078081173.jpg" alt="门禁二维码" class="qr-code">
+        <p class="qr-note">此二维码为门禁二维码和员工识别码，门禁二维码暂不开放。</p>
+    </div>
+    
+    <p class="flip-instruction" id="flip-instruction">向上滑动查看二维码</p>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeOverlay = document.getElementById('welcome-overlay');
+            const mainCard = document.getElementById('main-card');
+            const qrSection = document.getElementById('qr-section');
+            const flipInstruction = document.getElementById('flip-instruction');
+            
+            // 检查今天是否是2025年8月25日
+            const today = new Date();
+            const isAug25 = today.getFullYear() === 2025 && 
+                            today.getMonth() === 7 && // 月份从0开始，7代表8月
+                            today.getDate() === 25;
+            
+            // 检查用户是否已经看过欢迎动画
+            const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+            
+            if (isAug25 && !hasSeenWelcome) {
+                // 显示欢迎动画
+                welcomeOverlay.style.display = 'flex';
+                
+                // 5秒后隐藏欢迎动画并显示工作证
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                    mainCard.style.display = 'flex';
+                    flipInstruction.style.display = 'block';
+                    // 标记用户已经看过欢迎动画
+                    localStorage.setItem('hasSeenWelcome', 'true');
+                }, 5000);
+            } else {
+                // 直接显示工作证
+                welcomeOverlay.style.display = 'none';
+                mainCard.style.display = 'flex';
+                flipInstruction.style.display = 'block';
+            }
+            
+            // 滚动显示二维码
+            let startY = 0;
+            document.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                const endY = e.changedTouches[0].clientY;
+                // 如果向上滑动幅度足够大
+                if (startY - endY > 100) {
+                    mainCard.style.display = 'none';
+                    qrSection.style.display = 'flex';
+                    flipInstruction.style.display = 'none';
+                }
+                
+                // 如果向下滑动幅度足够大
+                if (endY - startY > 100 && qrSection.style.display === 'flex') {
+                    qrSection.style.display = 'none';
+                    mainCard.style.display = 'flex';
+                    flipInstruction.style.display = 'block';
+                }
+            });
+            
+            // 添加鼠标滚轮支持（用于桌面浏览器测试）
+            document.addEventListener('wheel', function(e) {
+                if (e.deltaY > 50 && mainCard.style.display === 'flex') {
+                    // 向下滚动
+                    mainCard.style.display = 'none';
+                    qrSection.style.display = 'flex';
+                    flipInstruction.style.display = 'none';
+                } else if (e.deltaY < -50 && qrSection.style.display === 'flex') {
+                    // 向上滚动
+                    qrSection.style.display = 'none';
+                    mainCard.style.display = 'flex';
+                    flipInstruction.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
